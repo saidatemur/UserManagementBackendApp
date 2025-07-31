@@ -7,6 +7,7 @@ using UserManagementApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// CORS politikası
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
@@ -18,11 +19,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
+// Authentication ve JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddCookie(x =>
     {
@@ -52,6 +55,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -85,6 +89,7 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+// Swagger sadece development veya local ortamda aktif
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 {
     app.UseSwagger();
@@ -96,6 +101,8 @@ if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseCors("AllowSpecificOrigin");
 
