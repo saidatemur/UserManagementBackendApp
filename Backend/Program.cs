@@ -11,55 +11,49 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("https://user-management-frontend-app.vercel.app/") // Frontend URL
+        policy.WithOrigins("https://user-management-frontend-app.vercel.app")
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
 
-
-// Veritabanı bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default");
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 
-// JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-.AddCookie(x =>
-{
-    x.Cookie.Name = "token";
-})
-.AddJwtBearer(x =>
-{
-    x.TokenValidationParameters = new TokenValidationParameters
+    .AddCookie(x =>
     {
-        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
-        ValidAudience = builder.Configuration["JwtSettings:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey
-        (Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!)),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-    };
-    x.Events = new JwtBearerEvents
+        x.Cookie.Name = "token";
+    })
+    .AddJwtBearer(x =>
     {
-        OnMessageReceived = m =>
+        x.TokenValidationParameters = new TokenValidationParameters
         {
-            m.Token = m.Request.Cookies["token"];
-            return Task.CompletedTask;
-        }
-    };
-});
-
-
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+        };
+        x.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = m =>
+            {
+                m.Token = m.Request.Cookies["token"];
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
-// Swagger yapılandırması
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -84,15 +78,13 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            new string[] { }
         }
     });
 });
 
-
 var app = builder.Build();
 
-// Geliştirme ortamı için Swagger aktif
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 {
     app.UseSwagger();
@@ -105,11 +97,12 @@ if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Run($"http://0.0.0.0:{port}");
