@@ -102,6 +102,8 @@ app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGet("/", () => "User Management Backend API work!");
+
 app.MapControllers();
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
