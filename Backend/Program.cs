@@ -89,6 +89,12 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+
 // Swagger sadece development veya local ortamda aktif
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 {
