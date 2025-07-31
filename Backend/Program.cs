@@ -11,7 +11,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // Frontend URL
+        policy.WithOrigins("https://user-management-frontend-app.vercel.app/") // Frontend URL
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
@@ -22,7 +22,8 @@ builder.Services.AddCors(options =>
 // Veritabanı bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"),
+        sqlOptions => sqlOptions.EnableRetryOnFailure());
 });
 
 // JWT Authentication
@@ -86,17 +87,6 @@ builder.Services.AddSwaggerGen(options =>
             },
             new string[] {}
         }
-    });
-});
-
-// CORS (gerekirse özelleştirilebilir)
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
     });
 });
 

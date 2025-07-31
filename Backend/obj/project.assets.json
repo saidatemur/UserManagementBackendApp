@@ -4963,11 +4963,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Asus\\Desktop\\UserManagementApp\\backend\\UserManagementApp.csproj",
+      "projectUniqueName": "C:\\Users\\Asus\\Desktop\\UserManagementBackendApp\\backend\\UserManagementApp.csproj",
       "projectName": "UserManagementApp",
-      "projectPath": "C:\\Users\\Asus\\Desktop\\UserManagementApp\\backend\\UserManagementApp.csproj",
+      "projectPath": "C:\\Users\\Asus\\Desktop\\UserManagementBackendApp\\backend\\UserManagementApp.csproj",
       "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Asus\\Desktop\\UserManagementApp\\backend\\obj\\",
+      "outputPath": "C:\\Users\\Asus\\Desktop\\UserManagementBackendApp\\backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config"
