@@ -8,10 +8,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # backend klasörünü içeri kopyala
-COPY backend/ ./backend/
+COPY Backend/ ./Backend/
 
 # build klasörüne geç
-WORKDIR /src/backend
+WORKDIR /src/Backend
 
 # projeyi restore et
 RUN dotnet restore UserManagementApp.csproj
