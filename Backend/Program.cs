@@ -23,7 +23,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure());
+       );
 });
 
 // JWT Authentication
