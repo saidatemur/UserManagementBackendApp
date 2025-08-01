@@ -95,7 +95,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-// Swagger sadece development veya local ortamda aktif
+
 if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Local"))
 {
     app.UseSwagger();
